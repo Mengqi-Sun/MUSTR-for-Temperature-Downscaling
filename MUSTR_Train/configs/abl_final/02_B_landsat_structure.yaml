@@ -1,0 +1,19 @@
+# Paper E2: stations and Landsat spatial structure.
+base: _shared.yaml
+
+loss:
+  lambda_sat: 0.5
+  sat_absolute_weight: 0.0
+
+physics:
+  enabled: false
+  weight: 0.0
+  phase_overrides:
+    phase1: {enabled: false}
+    phase2: {enabled: false}
+    phase3: {enabled: false}
+    phase4: {enabled: false}
+
+training:
+  curriculum:
+    phase1_name: StationsLandsatStructure

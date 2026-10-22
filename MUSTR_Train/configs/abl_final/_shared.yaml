@@ -1,0 +1,39 @@
+# Shared settings for paper experiments E1-E6.
+base: ../baseline.yaml
+
+data:
+  val_stride_days: 5
+
+loss:
+  lambda_air: 1.0
+  lambda_gst: 1.5
+
+physics:
+  mode: daynight_temperature_v1
+  windows: [day, night]
+  air_source: predicted_detached
+  sigma_forcing_w_m2: 30.0
+  tolerance_k: 0.43
+  huber_delta_sigma: 1.0
+  newton_steps: 4
+  bracket_k: 25.0
+  curve_samples: 24
+  # Shared calibrated priors, inlined into each resolved configuration.
+  priors_file: MUSTR_Train/experiments/assets/physics/priors_v6.yaml
+
+training:
+  seed: 100
+  num_workers: 24
+  max_train_batches: 800
+  # Zero runs the full validation loader.
+  max_val_batches: 0
+  early_stop_patience: 10
+  selection_metric: observation
+  # Select checkpoints using station losses only.
+  selection_weights: {air: 1.0, gst: 1.0, sat: 0.0}
+  curriculum:
+    # Also sets the cosine scheduler period.
+    phase1_max_epochs: 100
+    phase2_max_epochs: 0
+    phase3_max_epochs: 0
+    phase4_max_epochs: 0

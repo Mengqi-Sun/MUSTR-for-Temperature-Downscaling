@@ -1,0 +1,19 @@
+# Paper E5: E4 with lower physics weight (0.05).
+base: _shared.yaml
+
+loss:
+  lambda_sat: 0.5
+  sat_absolute_weight: 0.0
+
+physics:
+  enabled: true
+  weight: 0.05
+  phase_overrides:
+    phase1: {enabled: true}
+    phase2: {enabled: false}
+    phase3: {enabled: false}
+    phase4: {enabled: false}
+
+training:
+  curriculum:
+    phase1_name: PhysicsNoAbsolute

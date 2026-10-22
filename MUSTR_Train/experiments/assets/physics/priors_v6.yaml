@@ -1,0 +1,129 @@
+# Calibrated station GST and within-patch Landsat priors; regenerate fitted values.
+# Night parameters for Landsat-fitted groups are transferred from the GST fit.
+# Overpass contrasts are assumed to represent daytime window-mean contrasts.
+version: simple_priors_v6
+groups:
+  built:
+    classes:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    epsilon: 0.93
+    ra_ref_day: 70.17
+    ra_ref_night: 70.22
+    rs_day: 500.0
+    rs_night: 1202.33
+    capacity_day: 336389.5
+    capacity_night: 180956.3
+    api_half: 56.446
+    stability: 0.0
+    dry_paved: false
+  vegetation:
+    classes:
+    - 11
+    - 12
+    - 13
+    - 14
+    epsilon: 0.923
+    ra_ref_day: 70.17
+    ra_ref_night: 70.22
+    rs_day: 227.3
+    rs_night: 546.58
+    capacity_day: 305846.1
+    capacity_night: 164525.9
+    api_half: 56.446
+    stability: 0.0056
+    dry_paved: false
+  paved:
+    classes:
+    - 15
+    epsilon: 0.95
+    ra_ref_day: 100.0
+    ra_ref_night: 100.07
+    rs_day: 0.0
+    rs_night: 0.0
+    capacity_day: 517968.3
+    capacity_night: 278634.3
+    api_half: 56.446
+    stability: 0.0
+    dry_paved: true
+  soil:
+    classes:
+    - 16
+    epsilon: 0.923
+    ra_ref_day: 70.17
+    ra_ref_night: 70.22
+    rs_day: 227.3
+    rs_night: 546.58
+    capacity_day: 305846.1
+    capacity_night: 164525.9
+    api_half: 56.446
+    stability: 0.0056
+    dry_paved: false
+  wet:
+    classes:
+    - 17
+    - 18
+    epsilon: 0.98
+    ra_ref_day: 300.0
+    ra_ref_night: 300.0
+    rs_day: 0.0
+    rs_night: 0.0
+    capacity_day: 484190.8
+    capacity_night: 484190.8
+    api_half: 0.0
+    stability: 0.0
+    dry_paved: false
+units:
+  epsilon: '1'
+  ra_ref_day: s/m
+  ra_ref_night: s/m
+  rs_day: s/m
+  rs_night: s/m
+  capacity_day: J/m2/K
+  capacity_night: J/m2/K
+  api_half: mm
+  stability: '1'
+  qf: W/m2
+wind:
+  reference: 2.0
+  floor: 0.5
+qf:
+  source: https://github.com/wrf-model/WRF/blob/v4.6.1/run/URBPARM_LCZ.TBL
+  profile_mean: 0.5554166666666667
+  urban_fraction:
+  - 0.95
+  - 0.9
+  - 0.85
+  - 0.65
+  - 0.7
+  - 0.6
+  - 0.85
+  - 0.85
+  - 0.3
+  - 0.55
+  ah:
+  - 175.0
+  - 37.5
+  - 37.5
+  - 25.0
+  - 12.5
+  - 12.5
+  - 17.5
+  - 25.0
+  - 5.0
+  - 350.0
+quality:
+  required_hours: 24
+  snow_fraction_max: 0.01
+  freezing_k: 273.15
+  wet_pair_mm: 1.0
+  low_confidence: 0.25
+  min_pixels: 20

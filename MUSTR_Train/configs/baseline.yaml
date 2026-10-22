@@ -1,0 +1,109 @@
+# Shared model and training defaults; data paths point to the bundled examples.
+data:
+  h5_dir: DataCube/samples/cubes
+  station_csv: DataCube/samples/stations.csv
+  virtual_file_prefix: VC
+  window_days: 7
+  stride_days: 1
+  val_stride_days: 7
+  total_daily_steps: 2191
+  spatial_size: 19
+  clcz_embed_dim: 16
+  kg_embed_dim: 2
+  train_years: [2018, 2019, 2020, 2021, 2022]
+  test_year: 2023
+  val_months:
+    2018: [1]
+    2019: [4]
+    2020: [7]
+    2021: [10]
+    2022: [2]
+  val_use_full_year: true
+
+normalization:
+  enabled: false
+
+model:
+  hidden_dim: 96
+  n_temporal_blocks: 6
+  daily:
+    # Learned spatial anomaly bounds in Kelvin.
+    air_spatial_anomaly_scale_k: 2.0
+    surface_spatial_anomaly_scale_k: 6.0
+    gap_log_scale: 0.25
+    reference_gap_ratio_min: 0.25
+    reference_gap_ratio_max: 4.0
+
+physics:
+  enabled: false
+  mode: daynight_temperature_v1
+  weight: 1
+  # Absent phase settings use global defaults.
+  phase_overrides: {}
+  priors_file: MUSTR_Train/experiments/assets/physics/priors_v6.yaml
+
+loss:
+  lambda_air: 1.0
+  lambda_sat: 1.0
+  lambda_gst: 1.0
+  air_loss_type: smooth_l1
+  air_huber_beta: 1.0
+  sat_loss_type: smooth_l1
+  sat_huber_beta: 1.0
+  sat_absolute_weight: 0.35
+  sat_anomaly_weight: 0.45
+  sat_pattern_weight: 0.2
+  sat_gradient_weight: 0.1
+  sat_curve_mean_weight: 0.05
+  sat_curve_power_min: 0.05
+  sat_curve_power_max: 64.0
+  sat_curve_newton_steps: 10
+  gst_loss_type: smooth_l1
+  gst_huber_beta: 1.0
+
+training:
+  device: cuda
+  gpu_ids: [0]
+  optimizer: adamw
+  lr: 0.00015
+  eta_min: 1.0e-6
+  weight_decay: 0.0001
+  max_grad_norm: 1.0
+  seed: 42
+  deterministic: false
+  use_amp: true
+  amp_dtype: bfloat16
+  batch_size: 512
+  num_workers: 24
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+  start_phase: 1
+  stop_after_phase: 0
+  early_stop_patience: 10
+  early_stop_min_delta: 0.0
+  max_train_batches: 1000
+  # Zero runs the full validation loader.
+  max_val_batches: 0
+  progress_log_interval: 0
+  shuffle_limited_val: false
+  selection_metric: observation
+  selection_weights: {air: 1.0, gst: 1.0, sat: 0.5}
+  sampling_mode: semi_constrained
+  batch_policy:
+    min_tem_daily: 8
+    min_gst_daily: 6
+    min_landsat: 4
+    prefer_overlap: 2
+    prefer_gst_landsat_overlap: 8
+    station_bucket_enabled: true
+    min_unique_stations_per_batch: 8
+    # Keep within the per-worker open-file cache capacity.
+    max_unique_stations_per_batch: 64
+    target_unique_station_ratio: 0.25
+    target_samples_per_station: 4
+    station_bucket_strict: true
+    station_bucket_max_attempts: 12
+  curriculum:
+    phase1_name: ObservationOnly
+    phase1_max_epochs: 60

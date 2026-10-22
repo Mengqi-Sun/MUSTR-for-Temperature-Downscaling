@@ -1,0 +1,9 @@
+# Tested with Python 3.10.19; choose a PyTorch build suitable for your device.
+torch==2.11.0
+tensorboard==2.20.0
+numpy==1.26.4
+pandas==2.3.3
+h5py==3.13.0
+PyYAML==6.0.3
+matplotlib==3.10.8
+openpyxl==3.1.5

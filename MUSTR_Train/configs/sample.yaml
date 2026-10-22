@@ -1,0 +1,19 @@
+# Small CPU run using the bundled examples; not a paper reproduction.
+base: abl_final/05_E_physics_no_absolute.yaml
+
+data:
+  # Use years with station labels for the one-batch demonstration.
+  train_years: [2021, 2022]
+
+training:
+  device: cpu
+  batch_size: 2
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: false
+  use_amp: false
+  sampling_mode: ""
+  max_train_batches: 1
+  max_val_batches: 1
+  curriculum:
+    phase1_max_epochs: 1
